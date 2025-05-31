@@ -11,7 +11,7 @@ from datetime import datetime
 class VehicleType(Enum):
     CAR = "car"
     BIKE = "bike"
-    TRUCK = "truck"
+    TRUCK = "truck" 
 
 class SpotType(Enum):
     COMPACT = "compact"
