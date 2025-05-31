@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>HTML Slider</title>
+  </head>
+  <body>
+    <label for="volume">Volume: <span id="volumeValue">50</span></label>
+    <input
+      type="range"
+      id="volume"
+      name="volume"
+      min="0"
+      max="100"
+      value="50"
+    />
+
+    <script>
+      const slider = document.getElementById("volume");
+      const output = document.getElementById("volumeValue");
+
+      slider.oninput = function () {
+        output.textContent = this.value;
+      };
+    </script>
+  </body>
+</html>

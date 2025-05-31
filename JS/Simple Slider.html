@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Simple Slider</title>
+    <style>
+      #slider {
+        width: 300px;
+      }
+      #output {
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <input type="range" id="slider" min="0" max="100" />
+    <div id="output">Value: 50</div>
+
+    <script>
+      const slider = document.getElementById("slider");
+      const output = document.getElementById("output");
+
+      slider.value = 50;
+
+      slider.oninput = () => {
+        output.textContent = `Value: ${slider.value}`;
+      };
+    </script>
+  </body>
+</html>

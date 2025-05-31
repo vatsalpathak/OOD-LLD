@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>TreeView</title>
+    <style>
+      .node {
+        margin-left: 20px;
+        cursor: pointer;
+      }
+      .toggle {
+        font-weight: bold;
+        margin-right: 5px;
+      }
+      button {
+        margin-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="tree-root"></div>
+
+    <script>
+      const treeData = [{ id: 1, name: "Root", children: [] }];
+
+      function renderTree(container, nodes) {
+        container.innerHTML = "";
+        nodes.forEach((node) => {
+          const nodeDiv = document.createElement("div");
+          nodeDiv.className = "node";
+
+          const toggle = document.createElement("span");
+          toggle.textContent = node.children.length ? "[+]" : "[ ]";
+          toggle.className = "toggle";
+          toggle.onclick = () => {
+            if (toggle.textContent === "[+]") {
+              toggle.textContent = "[-]";
+              if (
+                !nodeDiv.nextSibling ||
+                !nodeDiv.nextSibling.classList.contains("children")
+              ) {
+                const childrenDiv = document.createElement("div");
+                childrenDiv.className = "children";
+                renderTree(childrenDiv, node.children);
+                nodeDiv.after(childrenDiv);
+              } else {
+                nodeDiv.nextSibling.style.display = "block";
+              }
+            } else {
+              toggle.textContent = "[+]";
+              if (nodeDiv.nextSibling)
+                nodeDiv.nextSibling.style.display = "none";
+            }
+          };
+
+          const label = document.createElement("span");
+          label.textContent = node.name;
+
+          const addBtn = document.createElement("button");
+          addBtn.textContent = "+";
+          addBtn.onclick = () => {
+            const name = prompt("Enter node name:");
+            if (name) {
+              node.children.push({ id: Date.now(), name, children: [] });
+              toggle.textContent = "[-]";
+              if (
+                nodeDiv.nextSibling &&
+                nodeDiv.nextSibling.classList.contains("children")
+              ) {
+                renderTree(nodeDiv.nextSibling, node.children);
+                nodeDiv.nextSibling.style.display = "block";
+              } else {
+                const childrenDiv = document.createElement("div");
+                childrenDiv.className = "children";
+                renderTree(childrenDiv, node.children);
+                nodeDiv.after(childrenDiv);
+              }
+            }
+          };
+
+          nodeDiv.appendChild(toggle);
+          nodeDiv.appendChild(label);
+          nodeDiv.appendChild(addBtn);
+          container.appendChild(nodeDiv);
+        });
+      }
+
+      renderTree(document.getElementById("tree-root"), treeData);
+    </script>
+  </body>
+</html>

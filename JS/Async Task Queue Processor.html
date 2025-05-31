@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Async Task Queue</title>
+  </head>
+  <body>
+    <button id="add-task">Add Async Task</button>
+    <div id="log"></div>
+
+    <script>
+      class AsyncTaskQueue {
+        constructor() {
+          this.queue = [];
+          this.processing = false;
+        }
+
+        add(task) {
+          this.queue.push(task);
+          this.processNext();
+        }
+
+        async processNext() {
+          if (this.processing) return;
+          if (this.queue.length === 0) return;
+
+          this.processing = true;
+          const task = this.queue.shift();
+
+          await task();
+
+          this.processing = false;
+          this.processNext();
+        }
+      }
+
+      const queue = new AsyncTaskQueue();
+      const logDiv = document.getElementById("log");
+
+      document.getElementById("add-task").onclick = () => {
+        const taskNumber = queue.queue.length + 1 + (queue.processing ? 1 : 0);
+        queue.add(async () => {
+          logDiv.innerHTML += `Task ${taskNumber} started<br/>`;
+          await new Promise((r) => setTimeout(r, 1000)); // simulate async
+          logDiv.innerHTML += `Task ${taskNumber} finished<br/>`;
+        });
+      };
+    </script>
+  </body>
+</html>
